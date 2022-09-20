@@ -12,15 +12,13 @@ Every contribution it is appreciated, also a simple feedback.
 
 ## How it works
 
-The workflow is using `youtube-dl` library and `puppeteer`.
-
-The first one is a npm module used for downloading the video / audio from YouTube, meanwhile Puppeteer will upload the generated file into the Anchor.fm dashboard (by logging it).
-
 The action will start every time you push a change on the `episode.json` file. Into this file you need to specify the YouTube id of your video.
 
-The action use a docker image built over ubuntu 18.04. It take some times to setup the environment (installing dependencies and chromium browser).
+The action uses a docker image built over Ubuntu. It takes some time to setup the environment before runnign the script.
 
-## How can I use it?
+**NOTE**: in order for the script to run its necessary for there to be at least one episode already published on anchorFM manually, because on a brand new anchor fm account the steps to publish are bit different, it asks questions about the channel.
+
+## How can I use this as a Github action?
 
 You can use the latest version of this action from the [GitHub Actions marketplace](https://github.com/marketplace/actions/upload-episode-from-youtube-to-anchor-fm).
 
@@ -48,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Upload Episode from YouTube To Anchor.Fm
-        uses: Schrodinger-Hat/youtube-to-anchorfm@v1.0.3
+        uses: Schrodinger-Hat/youtube-to-anchorfm@v2.0.0
         env:
           ANCHOR_EMAIL: ${{ secrets.ANCHOR_EMAIL }}
           ANCHOR_PASSWORD: ${{ secrets.ANCHOR_PASSWORD }}
@@ -57,9 +55,28 @@ jobs:
 
 **NOTE**: you need to [set up the secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) for *ANCHOR_EMAIL* and *ANCHOR_PASSWORD*. This environment variables are mandatory as they specify the sign in account.
 
-## Process a YouTube playlist
+## How can I setup for development and use the script locally?
 
-Right now, you can process a full playlist (one way only) with
+To run the script locally, you need ```python3``` and ```ffmpeg``` to be avaliable in ```PATH``` which are used by the npm dependency ```youtube-dl-exec```.
+
+Clone the repository and run ```npm ci``` to install the exact dependencies that are specified in ```package-lock.json```.
+
+After that, you can edit ```episode.json``` that is located at the root of this repository.
+It is recommended to specify the id of a short youtube video in ```episode.json``` for testing.
+
+Then, make sure to setup your ```.env``` file in the root of this repository so you can put
+the environment variables that you normaly specify in the Github action YAML file.
+
+To do that, you can copy ```.env.sample``` into a file with name ```.env```.
+
+Make sure to specify the mandatory environment variables for logging in to Anchorfm,
+ ```ANCHOR_EMAIL``` and ```ANCHOR_PASSWORD```.
+
+Finally, you can do ```npm start``` to execute the script.
+
+## How to upload a YouTube playlist to Anchorfm using this script?
+
+Currently, you can process a full playlist (one way only) with
 
 ```
 curl https://scc-youtube.vercel.app/playlist-items/PLoXdlLuaGN8ShASxcE2A4YuSto3AblDmX \
@@ -78,7 +95,9 @@ curl https://scc-youtube.vercel.app/playlist-items/PLoXdlLuaGN8ShASxcE2A4YuSto3A
 
 This must be run on the folder where your episode.json is.
 
-## Draft Mode
+## Environment variables
+
+### Draft Mode
 
 By setting the `SAVE_AS_DRAFT`, the new episode will be published as a draft. This can be useful if you need someone else's
 approval before actual publication.
@@ -88,7 +107,7 @@ env:
    SAVE_AS_DRAFT: true
 ```
 
-## Audio conversion options
+### Audio conversion options
 
 ffmpeg is used to convert the video to MP3. It's possible to pass arguments to ffmpeg with `POSTPROCESSOR_ARGS` environment
 variable.
@@ -102,7 +121,7 @@ env:
    POSTPROCESSOR_ARGS: "ffmpeg:-ac 1"
 ```
 
-## Explicit Mode
+### Explicit Mode
 
 By setting the `IS_EXPLICIT`, the new episode will be marked as explicit.
 ```yaml
@@ -110,7 +129,7 @@ env:
    IS_EXPLICIT: true
 ```
 
-## Thumbnail Mode
+### Thumbnail Mode
 
 By setting the `LOAD_THUMBNAIL`, the new episode will include the video thumbnail as the episode art.
 ```yaml
@@ -118,7 +137,7 @@ env:
    LOAD_THUMBNAIL: true
 ```
 
-## Add YouTube URL to Podcast Description
+### Add YouTube URL to Podcast Description
 
 By setting the `URL_IN_DESCRIPTION`, the Podcast description will include the YouTube URL on a new line at the end of the description.
 It is recommended to set it, for if the YouTube video has no description it will fail to save the new episode. Setting it to true guarantees to always have a description.
@@ -128,11 +147,39 @@ env:
    URL_IN_DESCRIPTION: true
 ```
 
+### Set a publish date for the episode
 
-# Credits
+By setting `SET_PUBLISH_DATE`, the new episode can be scheduled for publishing the episode on the date that the youtube video is uploaded. Please note that the scheduling will work if `SAVE_AS_DRAFT` is not set, because Anchofm doesn't store publish date for draft episodes.
+If `SET_PUBLISH_DATE` is not set, then Anchorfm will choose the current date for publishing.
+```yaml
+env:
+   SET_PUBLISH_DATE: true
+```
 
-[@thejoin](https://github.com/thejoin95) & [@wabri](https://github.com/wabri)
+# Contributors
 
+Thanks goes to these wonderful people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://www.linkedin.com/in/%F0%9F%90%A7gabriele-puliti-b62915a9/"><img src="https://avatars.githubusercontent.com/u/12409541?v=4?s=100" width="100px;" alt=""/><br /><sub><b>GabrielePuliti</b></sub></a><br /><a href="#design-Wabri" title="Design">🎨</a> <a href="https://github.com/Schrodinger-Hat/youtube-to-anchorfm/commits?author=Wabri" title="Code">💻</a> <a href="#maintenance-Wabri" title="Maintenance">🚧</a> <a href="https://github.com/Schrodinger-Hat/youtube-to-anchorfm/pulls?q=is%3Apr+reviewed-by%3AWabri" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center"><a href="https://www.mikilombardi.com"><img src="https://avatars.githubusercontent.com/u/6616203?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Miki Lombardi</b></sub></a><br /><a href="https://github.com/Schrodinger-Hat/youtube-to-anchorfm/commits?author=TheJoin95" title="Code">💻</a> <a href="#maintenance-TheJoin95" title="Maintenance">🚧</a> <a href="https://github.com/Schrodinger-Hat/youtube-to-anchorfm/pulls?q=is%3Apr+reviewed-by%3ATheJoin95" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center"><a href="habet.dev"><img src="https://avatars.githubusercontent.com/u/82916197?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Abe Hanoka</b></sub></a><br /><a href="https://github.com/Schrodinger-Hat/youtube-to-anchorfm/commits?author=abe-101" title="Code">💻</a> <a href="#maintenance-abe-101" title="Maintenance">🚧</a> <a href="https://github.com/Schrodinger-Hat/youtube-to-anchorfm/pulls?q=is%3Apr+reviewed-by%3Aabe-101" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center"><a href="https://github.com/matevskial"><img src="https://avatars.githubusercontent.com/u/44746117?v=4?s=100" width="100px;" alt=""/><br /><sub><b>matevskial</b></sub></a><br /><a href="https://github.com/Schrodinger-Hat/youtube-to-anchorfm/commits?author=matevskial" title="Code">💻</a> <a href="#maintenance-matevskial" title="Maintenance">🚧</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://allcontributors.org) specification.
 
 # License
 

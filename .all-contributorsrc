@@ -1,0 +1,58 @@
+{
+  "projectName": "youtube-to-anchorfm",
+  "projectOwner": "Schrodinger-Hat",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "contributors": [
+    {
+      "login": "Wabri",
+      "name": "GabrielePuliti",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12409541?v=4",
+      "profile": "https://www.linkedin.com/in/%F0%9F%90%A7gabriele-puliti-b62915a9/",
+      "contributions": [
+        "design",
+        "code",
+        "maintenance",
+        "review"
+      ]
+    },
+    {
+      "login": "TheJoin95",
+      "name": "Miki Lombardi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6616203?v=4",
+      "profile": "https://www.mikilombardi.com",
+      "contributions": [
+        "code",
+        "maintenance",
+        "review"
+      ]
+    },
+    {
+      "login": "abe-101",
+      "name": "Abe Hanoka",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82916197?v=4",
+      "profile": "habet.dev",
+      "contributions": [
+        "code",
+        "maintenance",
+        "review"
+      ]
+    },
+    {
+      "login": "matevskial",
+      "name": "matevskial",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44746117?v=4",
+      "profile": "https://github.com/matevskial",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": "true"
+}
